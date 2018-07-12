@@ -55,8 +55,6 @@ int main(int argc, char *argv[]) {
 
 		ShowBuyScreen(gWindow, &player);
 
-
-
 		// play the first level
 		PlayLevel(gWindow, &player, 1);
 	}
@@ -85,6 +83,51 @@ BuyScreenReturnValues ShowBuyScreen(SDL_Window* gWindow, PlayerData* player) {
 
 
 	//we should never exit the loop
+}
+
+PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int level) {
+	//get  window surface from window
+
+
+	//initialise player combat object from playerData
+	//if first level, give the player some initial fuel
+
+
+
+
+	while (true) {
+		
+
+		//check if player has just finished death animation
+			//return PlayLevelReturnValues::FAILED
+
+		//check if player has just finished level warp animation
+			//deconstruct all objects being used
+			//return PlayLevelReturnValues::NEXTLEVEL
+
+		//process inputs (clicks on buttons, closing game)
+
+		//if quit,
+			//return PlayLevelReturnValues::QUITGAME;
+
+
+		//for controls, pass these along to player, they will convert this to thrust and vectoring
+
+		//get inputs this turn for enemies
+
+		//process movement for all combatants
+
+		//check for collisions, process damage as appropriate
+
+		//level specific effects, i.e, spawn enemies
+
+		//render screen
+
+	
+	}
+
+
+
 }
 
 
