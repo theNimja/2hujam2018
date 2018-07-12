@@ -11,7 +11,7 @@ PlayerCombatant::~PlayerCombatant() {
 }
 
 int PlayerCombatant::GetMaxHealth() const {
-	return myData->GetMaxHealth();;
+	return myData->GetMaxHealth();
 }
 
 int PlayerCombatant::GetMaxFuel() const {

@@ -52,11 +52,24 @@ int main(int argc, char *argv[]) {
 	} else {
 
 		PlayerData player = PlayerData();
+		while (true) {
 
-		ShowBuyScreen(gWindow, &player);
+			BuyScreenReturnValues buyResult = ShowBuyScreen(gWindow, &player);
+			if (buyResult == BuyScreenReturnValues::QUITGAME) { return 0; }
+			PlayLevelReturnValues playResult = PlayLevelReturnValues::NEXTLEVEL;
 
-		// play the first level
-		PlayLevel(gWindow, &player, 1);
+			int currentLevel = 0;
+			// play the first level
+
+			while (playResult == PlayLevelReturnValues::NEXTLEVEL) {
+				currentLevel++;
+				playResult = PlayLevel(gWindow, &player, currentLevel);
+			}
+
+			//player failed or quit
+			if (playResult == PlayLevelReturnValues::QUITGAME) { return 0; }
+			// if failed, will loop round to the buy screen
+		}
 	}
 
 
@@ -92,7 +105,12 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 	//initialise player combat object from playerData
 	//if first level, give the player some initial fuel
 
+	//place player at starting location
 
+
+	//play area might vary between levels
+	int playAreaX = SCREEN_WIDTH;
+	int playAreaY = SCREEN_HEIGHT;
 
 
 	while (true) {
@@ -117,7 +135,7 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 
 		//process movement for all combatants
 
-		//check for collisions, process damage as appropriate
+			//check for collisions, process damage as appropriate
 
 		//level specific effects, i.e, spawn enemies
 
@@ -125,6 +143,8 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 
 	
 	}
+
+	//we should never exit the loop
 
 
 
