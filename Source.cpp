@@ -119,10 +119,12 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 	std::list<Combatant*> combatants = std::list<Combatant*>();
 	//TODO add player to combatants
 
-
+	//start timer
+	
+	float deltaTime = SDL_GetTicks()/1000;
 	while (true) {
 		//TODO get delta time
-		float deltaTime;
+		deltaTime = SDL_GetTicks() / 1000 - deltaTime;
 
 
 		//TODO check if player has just finished death animation
@@ -197,8 +199,8 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 				while (i->GetXPosition() > playAreaY) {
 					i->Move(0, -0.001);
 				}
-				//check for collision with other enemy, if so, move away from them
-				//check for collision with jet, it so, drop explosion and die
+				//TODO check for collision with other enemy, if so, move away from them
+				//TODO check for collision with jet, it so, drop explosion and die
 
 			}
 						
