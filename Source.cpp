@@ -123,7 +123,7 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 
 
 		//TODO check if player has just finished death animation
-			//return PlayLevelReturnValues::FAILED
+			//return PlayLevelReturnValues::FAILED, or spawn a new player
 
 		//TODO check if player has just finished level warp animation
 			//deconstruct all objects being used
@@ -166,7 +166,12 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 
 			//TODO check for collisions, process damage as appropriate
 
-			i->DampenVelocity(deltaTime);
+
+			//if we're the player and we're hit, drop the death explosion object, destroy the player object, wait for a new one to be spawned, loase fuel, lose a life
+
+
+
+			i->Tick(deltaTime);
 		}
 		//TODO level specific effects, i.e, spawn enemies
 

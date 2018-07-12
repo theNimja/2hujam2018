@@ -6,8 +6,8 @@ public:
 	Combatant();
 	~Combatant();
 
-	//reduces velocity over time by friction
-	void DampenVelocity(float deltaTime);
+	//does ticks such as dampening velocity, playing animations, updating timers, etc
+	void Tick(float deltaTime);
 
 	void Move(float x, float y);
 
@@ -20,8 +20,14 @@ public:
 	float GetYPosition();
 
 	float GetHitBoxRadius();
+protected:
 
+	//reduces velocity over time by friction
+	void DampenVelocity(float deltaTime);
+		
 private:
+	
+
 	float xPosition;
 	float yPosition;
 

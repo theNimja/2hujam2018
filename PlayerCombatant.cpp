@@ -22,6 +22,11 @@ float PlayerCombatant::GetFuel() const {
 	return myData->GetFuel();
 }
 
+void PlayerCombatant::Tick(float deltaTime) {
+	__super::Tick(deltaTime);
+	__super::DampenVelocity(deltaTime);
+}
+
 int PlayerCombatant::GetHealth() const {
 	return myData->GetHealth();
 }

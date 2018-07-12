@@ -23,6 +23,8 @@ public:
 	//returns available fuel
 	float GetFuel() const;
 
+	void Tick(float deltaTime);
+
 
 
 };

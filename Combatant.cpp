@@ -67,6 +67,10 @@ void Combatant::DampenVelocity(float deltaTime) {
 }
 
 
+void Combatant::Tick(float deltaTime) {
+	
+}
+
 void Combatant::Move(float x, float y) {
 	xPosition += x;
 	yPosition += y;
