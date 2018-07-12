@@ -11,7 +11,6 @@ PlayerData::PlayerData() {
 	fuelBonus = 0;
 	speedBonus - 0;
 	efficiencyBonus = 0;
-
 }
 
 
