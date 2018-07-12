@@ -17,3 +17,15 @@ PlayerData::PlayerData() {
 
 PlayerData::~PlayerData() {
 }
+
+int PlayerData::GetCredits() const {
+	return credits;
+}
+
+float PlayerData::GetFuel() const {
+	return fuel;
+}
+
+int PlayerData::GetHealth() const {
+	return health;
+}

@@ -83,6 +83,8 @@ BuyScreenReturnValues ShowBuyScreen(SDL_Window* gWindow, PlayerData* player) {
 		//render screen
 	}
 
+
+	//we should never exit the loop
 }
 
 
