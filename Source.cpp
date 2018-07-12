@@ -99,47 +99,50 @@ BuyScreenReturnValues ShowBuyScreen(SDL_Window* gWindow, PlayerData* player) {
 }
 
 PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int level) {
-	//get  window surface from window
+	//TODO get  window surface from window
 
 
-	//initialise player combat object from playerData
-	//if first level, give the player some initial fuel
-
-	//place player at starting location
-
+	//TODO initialise player combat object from playerData
+	//TODO if first level, give the player some initial fuel
 
 	//play area might vary between levels
 	int playAreaX = SCREEN_WIDTH;
 	int playAreaY = SCREEN_HEIGHT;
 
 
+	//TODO place player at starting location
+
+
+
+
+
 	while (true) {
 		
 
-		//check if player has just finished death animation
+		//TODO check if player has just finished death animation
 			//return PlayLevelReturnValues::FAILED
 
-		//check if player has just finished level warp animation
+		//TODO check if player has just finished level warp animation
 			//deconstruct all objects being used
 			//return PlayLevelReturnValues::NEXTLEVEL
 
-		//process inputs (clicks on buttons, closing game)
+		//TODO process inputs (clicks on buttons, closing game)
 
-		//if quit,
+		//TODO if quit,
 			//return PlayLevelReturnValues::QUITGAME;
 
 
-		//for controls, pass these along to player, they will convert this to thrust and vectoring
+		//TODO for controls, pass these along to player, they will convert this to thrust and vectoring
 
-		//get inputs this turn for enemies
+		//TODO get inputs this turn for enemies
 
-		//process movement for all combatants
+		//TODO process movement for all combatants
 
 			//check for collisions, process damage as appropriate
 
-		//level specific effects, i.e, spawn enemies
+		//TODO level specific effects, i.e, spawn enemies
 
-		//render screen
+		//TODO render screen
 
 	
 	}
