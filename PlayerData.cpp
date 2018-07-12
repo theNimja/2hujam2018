@@ -17,6 +17,14 @@ PlayerData::PlayerData() {
 PlayerData::~PlayerData() {
 }
 
+int PlayerData::GetMaxHealth() const {
+	return 0;
+}
+
+int PlayerData::GetMaxFuel() const {
+	return 0;
+}
+
 int PlayerData::GetCredits() const {
 	return credits;
 }
