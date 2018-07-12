@@ -20,6 +20,8 @@ public:
 	float GetYPosition();
 
 	float GetHitBoxRadius();
+
+	float DistanceTo(Combatant* other);
 protected:
 
 	//reduces velocity over time by friction

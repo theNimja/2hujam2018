@@ -95,3 +95,10 @@ float Combatant::GetYPosition() {
 float Combatant::GetHitBoxRadius() {
 	return hitBoxRadius;
 }
+
+float Combatant::DistanceTo(Combatant* other) {
+	float xDiff = other->GetXPosition();
+	float yDiff = other->GetYPosition();
+
+	return sqrtf(xDiff*xDiff + yDiff * yDiff);
+}

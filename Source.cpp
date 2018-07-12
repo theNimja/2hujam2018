@@ -178,7 +178,22 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 					i->Move(0, -0.001);
 				}
 
-				//TODO if we're hit, drop the death explosion object, destroy the player object, wait for a new one to be spawned, loase fuel, lose a life
+				//loop through other objects
+
+
+				for (Combatant* j : combatants) {
+					if (j != player) {
+						Bullet* b = static_cast<Bullet*>(j);
+						EnemyCombatant* e = static_cast<EnemyCombatant*>(j);
+						if (b != nullptr || e != nullptr) {
+							if (player->DistanceTo(j) < (player->GetHitBoxRadius() + j->GetHitBoxRadius())) {
+								//we've been hit by a bullet or enemy
+								//TODO if we're hit, drop the death explosion object, destroy the player object, wait for a new one to be spawned, loase fuel, lose a life
+							}
+						}
+
+					}
+				}
 			}
 
 
@@ -218,9 +233,8 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 		}
 		//TODO level specific effects, i.e, spawn enemies
 
-		//TODO render screen
-
-
+		//render screen
+		RenderGameScreen(window,&combatants);
 
 
 	}
