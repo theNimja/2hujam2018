@@ -327,3 +327,9 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder
 .mfractor/
+
+
+
+# VCXPROJ file, you need to set up your dependencies yourself
+
+*.vcxproj
