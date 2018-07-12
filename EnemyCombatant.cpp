@@ -10,7 +10,7 @@ EnemyCombatant::~EnemyCombatant() {
 }
 
 
-EnemyCombatant::Tick(float deltaTime) {
+void EnemyCombatant::Tick(float deltaTime) {
 	__super::Tick(deltaTime);
 	__super::DampenVelocity(deltaTime);
 }

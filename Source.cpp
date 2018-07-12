@@ -6,6 +6,9 @@
 
 #include "PlayerData.h"
 #include "Combatant.h"
+#include "PlayerCombatant.h"
+#include "EnemyCombatant.h"
+#include "Bullet.h"
 
 #include "PlayerCombatant.h"
 
@@ -22,7 +25,7 @@ enum BuyScreenReturnValues {
 
 enum PlayLevelReturnValues {
 	NEXTLEVEL,
-	QUITGAME,
+	QUIT,
 	FAILED
 };
 
@@ -69,7 +72,7 @@ int main(int argc, char *argv[]) {
 			}
 
 			//player failed or quit
-			if (playResult == PlayLevelReturnValues::QUITGAME) { return 0; }
+			if (playResult == PlayLevelReturnValues::QUIT) { return 0; }
 			// if failed, will loop round to the buy screen
 		}
 	}
@@ -149,27 +152,58 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 			//move combatant
 			i->Move(i->GetXVelocity()*deltaTime, i->GetYVelocity()*deltaTime);
 
-			//bump back into bounds
-			while (i->GetXPosition > playAreaX) {
-				i->Move(-0.001, 0);
-			}
-			while (i->GetYPosition > playAreaY) {
-				i->Move(0, -0.001);
-			}
-			while (i->GetXPosition < 0) {
-				i->Move(0.001,0);
-			}
-			while (i->GetXPosition > playAreaY) {
-				i->Move(0, -0.001);
-			}
+			
 
 
 			//TODO check for collisions, process damage as appropriate
+		
+			//differnt collision checks for different types
 
+			PlayerCombatant* player = static_cast<PlayerCombatant*>(i);
+			if (player != nullptr) {
+				
+				//bump back into bounds
+				while (i->GetXPosition() > playAreaX) {
+					i->Move(-0.001, 0);
+				}
+				while (i->GetYPosition() > playAreaY) {
+					i->Move(0, -0.001);
+				}
+				while (i->GetXPosition() < 0) {
+					i->Move(0.001, 0);
+				}
+				while (i->GetXPosition() > playAreaY) {
+					i->Move(0, -0.001);
+				}
 
-			//if we're the player and we're hit, drop the death explosion object, destroy the player object, wait for a new one to be spawned, loase fuel, lose a life
+				//TODO if we're hit, drop the death explosion object, destroy the player object, wait for a new one to be spawned, loase fuel, lose a life
+			}
+				
 
+			//TODO Enemy:
+			EnemyCombatant* enemy = static_cast<EnemyCombatant*>(i);
+			if (enemy != nullptr) {
 
+				//bump back into bounds
+				while (i->GetXPosition() > playAreaX) {
+					i->Move(-0.001, 0);
+				}
+				while (i->GetYPosition() > playAreaY) {
+					i->Move(0, -0.001);
+				}
+				while (i->GetXPosition() < 0) {
+					i->Move(0.001, 0);
+				}
+				while (i->GetXPosition() > playAreaY) {
+					i->Move(0, -0.001);
+				}
+				//check for collision with other enemy, if so, move away from them
+				//check for collision with jet, it so, drop explosion and die
+
+			}
+						
+			//Projectile 
+			//TODO if we're out of bounds, destroy the bullet
 
 			i->Tick(deltaTime);
 		}

@@ -6,6 +6,6 @@ public:
 	EnemyCombatant();
 	~EnemyCombatant();
 
-	Tick(float deltaTime);
+	void Tick(float deltaTime);
 };
 

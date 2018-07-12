@@ -4,7 +4,7 @@
 
 class PlayerData;
 
-class PlayerCombatant : Combatant{
+class PlayerCombatant : public Combatant{
 public:
 	PlayerCombatant();
 	~PlayerCombatant();
