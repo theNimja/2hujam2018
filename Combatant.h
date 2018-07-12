@@ -1,6 +1,6 @@
 #pragma once
 
-//core class that all player avatar inherits from, also AI enemies
+//core class that player avatar inherits from, also AI enemies and bullets
 class Combatant {
 public:
 	Combatant();
@@ -9,6 +9,17 @@ public:
 	//reduces velocity over time by friction
 	void DampenVelocity(float deltaTime);
 
+	void Move(float x, float y);
+
+	float GetXVelocity();
+
+	float GetYVelocity();
+
+	float GetXPosition();
+
+	float GetYPosition();
+
+	float GetHitBoxRadius();
 
 private:
 	float xPosition;
@@ -17,9 +28,13 @@ private:
 	float xVelocity;
 	float yVelocity;
 
+	float angle;
+
 	float clockwiseVelocity;
 
 	float linearDragCoefficient;
 	float rotationalDragCoefficent;
+
+	float hitBoxRadius;
 };
 

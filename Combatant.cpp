@@ -65,3 +65,29 @@ void Combatant::DampenVelocity(float deltaTime) {
 	}
 
 }
+
+
+void Combatant::Move(float x, float y) {
+	xPosition += x;
+	yPosition += y;
+}
+
+float Combatant::GetXVelocity() {
+	return xVelocity;
+}
+
+float Combatant::GetYVelocity() {
+	return yVelocity;
+}
+
+float Combatant::GetXPosition() {
+	return xPosition;
+}
+
+float Combatant::GetYPosition() {
+	return yPosition;
+}
+
+float Combatant::GetHitBoxRadius() {
+	return hitBoxRadius;
+}

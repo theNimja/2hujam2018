@@ -1,11 +1,13 @@
 #include <iostream>
+#include <list>
+
 #include <SDL.h>
 
 
 #include "PlayerData.h"
+#include "Combatant.h"
 
-using namespace std;
-
+#include "PlayerCombatant.h"
 
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 762;
@@ -32,15 +34,15 @@ BuyScreenReturnValues ShowBuyScreen(SDL_Window* window, PlayerData* player);
 //takes pointers to the screen and player data,and the level to play, plays that level in that screen with tha player, returns if the player is advancing to the next level or failed/quitted
 PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* player, int level);
 
-
+void RenderGameScreen(SDL_Window* window, std::list<Combatant*>* Combatants);
 
 
 int main(int argc, char *argv[]) {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		cout << "SDL initialization failed. Error: " << SDL_GetError();
+		std::cout << "SDL initialization failed. Error: " << SDL_GetError();
 		return 0;
 	} else {
-		cout << "SDL initialization succeeded!";
+		std::cout << "SDL initialization succeeded!";
 	}
 	//The window we'll be rendering to
 	SDL_Window* gWindow = NULL;
@@ -99,9 +101,7 @@ BuyScreenReturnValues ShowBuyScreen(SDL_Window* gWindow, PlayerData* player) {
 }
 
 PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int level) {
-	//TODO get  window surface from window
-
-
+	
 	//TODO initialise player combat object from playerData
 	//TODO if first level, give the player some initial fuel
 
@@ -112,12 +112,15 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 
 	//TODO place player at starting location
 
-
-
+	//create list of combatants
+	std::list<Combatant*> combatants = std::list<Combatant*>();
+	//TODO add player to combatants
 
 
 	while (true) {
-		
+		//TODO get delta time
+		float deltaTime;
+
 
 		//TODO check if player has just finished death animation
 			//return PlayLevelReturnValues::FAILED
@@ -135,14 +138,41 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 		//TODO for controls, pass these along to player, they will convert this to thrust and vectoring
 
 		//TODO get inputs this turn for enemies
+		for (Combatant* i : combatants) {
+			//TODO get input and apply thrust
+		}
+
+
 
 		//TODO process movement for all combatants
+		for (Combatant* i : combatants) {
+			//move combatant
+			i->Move(i->GetXVelocity()*deltaTime, i->GetYVelocity()*deltaTime);
 
-			//check for collisions, process damage as appropriate
+			//bump back into bounds
+			while (i->GetXPosition > playAreaX) {
+				i->Move(-0.001, 0);
+			}
+			while (i->GetYPosition > playAreaY) {
+				i->Move(0, -0.001);
+			}
+			while (i->GetXPosition < 0) {
+				i->Move(0.001,0);
+			}
+			while (i->GetXPosition > playAreaY) {
+				i->Move(0, -0.001);
+			}
 
+
+			//TODO check for collisions, process damage as appropriate
+
+			i->DampenVelocity(deltaTime);
+		}
 		//TODO level specific effects, i.e, spawn enemies
 
 		//TODO render screen
+
+		
 
 	
 	}
@@ -150,6 +180,23 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 	//we should never exit the loop
 
 
+
+}
+
+void RenderGameScreen(SDL_Window * window, std::list<Combatant*>* Combatants) {
+	//TODO clear screen
+
+	//TODO draw background
+
+	//TODO loop through combatants
+		//TODO draw combatant
+	
+
+	//TODO draw other data like fuel
+
+	
+	//update screen
+	SDL_UpdateWindowSurface(window);
 
 }
 
