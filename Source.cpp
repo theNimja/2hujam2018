@@ -104,7 +104,7 @@ BuyScreenReturnValues ShowBuyScreen(SDL_Window* gWindow, PlayerData* player) {
 }
 
 PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int level) {
-	
+
 	//TODO initialise player combat object from playerData
 	//TODO if first level, give the player some initial fuel
 
@@ -120,8 +120,8 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 	//TODO add player to combatants
 
 	//start timer
-	
-	float deltaTime = SDL_GetTicks()/1000;
+
+	float deltaTime = SDL_GetTicks() / 1000;
 	while (true) {
 		//TODO get delta time
 		deltaTime = SDL_GetTicks() / 1000 - deltaTime;
@@ -154,16 +154,16 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 			//move combatant
 			i->Move(i->GetXVelocity()*deltaTime, i->GetYVelocity()*deltaTime);
 
-			
+
 
 
 			//TODO check for collisions, process damage as appropriate
-		
+
 			//differnt collision checks for different types
 
 			PlayerCombatant* player = static_cast<PlayerCombatant*>(i);
 			if (player != nullptr) {
-				
+
 				//bump back into bounds
 				while (i->GetXPosition() > playAreaX) {
 					i->Move(-0.001, 0);
@@ -180,7 +180,7 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 
 				//TODO if we're hit, drop the death explosion object, destroy the player object, wait for a new one to be spawned, loase fuel, lose a life
 			}
-				
+
 
 			//TODO Enemy:
 			EnemyCombatant* enemy = static_cast<EnemyCombatant*>(i);
@@ -203,19 +203,26 @@ PlayLevelReturnValues PlayLevel(SDL_Window* window, PlayerData* playerData, int 
 				//TODO check for collision with jet, it so, drop explosion and die
 
 			}
-						
-			//Projectile 
-			//TODO if we're out of bounds, destroy the bullet
 
+			//Projectile 
+
+			Bullet* bullet = static_cast<Bullet*>(i);
+			if (bullet != nullptr) {
+				//destroy bullet
+				if (i->GetXPosition() > playAreaX || i->GetYPosition() > playAreaY || i->GetXPosition() < 0 || i->GetXPosition() > playAreaY) {
+					combatants.remove(bullet);
+					delete bullet;
+				}
+			}
 			i->Tick(deltaTime);
 		}
 		//TODO level specific effects, i.e, spawn enemies
 
 		//TODO render screen
 
-		
 
-	
+
+
 	}
 
 	//we should never exit the loop
@@ -231,11 +238,11 @@ void RenderGameScreen(SDL_Window * window, std::list<Combatant*>* Combatants) {
 
 	//TODO loop through combatants
 		//TODO draw combatant
-	
+
 
 	//TODO draw other data like fuel
 
-	
+
 	//update screen
 	SDL_UpdateWindowSurface(window);
 
