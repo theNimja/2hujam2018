@@ -1,8 +1,12 @@
 #include "Combatant.h"
 #include <math.h>
 #include <SDL.h> 
+#include <map>
+#include "GameFuncDef.h"
+#include "SpriteHolder.h"
 
-Combatant::Combatant() {
+
+Combatant::Combatant(SpriteHolder* sprites) {
 }
 
 
@@ -26,7 +30,8 @@ void Combatant::DampenVelocity(float deltaTime) {
 		//as is the implied mass of the object
 
 		speed -= 0.5f*speed*speed*linearDragCoefficient * deltaTime;
-
+		if (speed > GetMaxVelocity()) { speed = GetMaxVelocity(); }
+		if (speed < 0) { speed = 0; }
 		//now set xVelocyt and yVelocity
 		// for X: speed = sqrt(xVelocity^2 + (xVelocity*slope)^2)
 		//speed^2 = xVelocyt^2 + (xVelocity*slope)^2
@@ -59,13 +64,23 @@ void Combatant::DampenVelocity(float deltaTime) {
 		}
 	}
 
-	//dampen rotational speed;
 
-	float drag = 0.5* clockwiseVelocity* clockwiseVelocity * rotationalDragCoefficent*deltaTime;
-	if (rotationalDragCoefficent > 0) {
-		clockwiseVelocity -= drag;
-	} else {
-		clockwiseVelocity += drag;
+
+	//dampen rotational speed;
+	if (abs(clockwiseVelocity) > 0) {
+		float drag = 0.5* clockwiseVelocity* clockwiseVelocity * rotationalDragCoefficent*deltaTime;
+
+		if (clockwiseVelocity > 0) {
+			clockwiseVelocity -= drag;
+			if (abs(clockwiseVelocity) > GetMaxAngularVelocity()) {
+				clockwiseVelocity = maxAngularVelocity;
+			}
+		} else {
+			clockwiseVelocity += drag;
+			if (abs(clockwiseVelocity) > GetMaxAngularVelocity()) {
+				clockwiseVelocity = -maxAngularVelocity;
+			}
+		}
 	}
 
 }
@@ -78,6 +93,10 @@ void Combatant::Tick(float deltaTime) {
 void Combatant::Move(float x, float y) {
 	xPosition += x;
 	yPosition += y;
+}
+
+void Combatant::Rotate(float rotAngle) {
+	angle += rotAngle;
 }
 
 float Combatant::GetXVelocity() {
@@ -108,7 +127,11 @@ float Combatant::DistanceTo(Combatant* other) {
 }
 
 float Combatant::GetRotation() {
-	return angle;
+	return angle-90;
+}
+
+float Combatant::GetRotationalVelocity() {
+	return clockwiseVelocity;
 }
 
 void Combatant::ThrustForwards(float thrust) {
@@ -125,3 +148,11 @@ void Combatant::ThrustClockwise(float thrust) {
 	clockwiseVelocity += thrust;
 }
 
+float Combatant::GetMaxVelocity() {
+	return maxVelocity;
+}
+
+
+float Combatant::GetMaxAngularVelocity() {
+	return maxAngularVelocity;
+}

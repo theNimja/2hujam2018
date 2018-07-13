@@ -3,7 +3,7 @@
 class EnemyCombatant :
 	public Combatant {
 public:
-	EnemyCombatant();
+	EnemyCombatant(SpriteHolder* sprites);
 	~EnemyCombatant();
 
 	void Tick(float deltaTime);

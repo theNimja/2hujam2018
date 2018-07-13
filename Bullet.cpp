@@ -2,7 +2,8 @@
 
 
 
-Bullet::Bullet() {
+Bullet::Bullet(SpriteHolder* sprites) :Combatant(sprites) {
+
 }
 
 

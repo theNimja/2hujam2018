@@ -1,12 +1,14 @@
 #pragma once
 
-#include "Combatant.h";
+#include "Combatant.h"
+struct SDL_Texture;
+
 
 class PlayerData;
 
 class PlayerCombatant : public Combatant{
 public:
-	PlayerCombatant();
+	PlayerCombatant(SpriteHolder* sprites, PlayerData* data);
 	~PlayerCombatant();
 
 	PlayerData* myData;
@@ -24,8 +26,6 @@ public:
 	float GetFuel() const;
 
 	void Tick(float deltaTime);
-
-
 
 };
 

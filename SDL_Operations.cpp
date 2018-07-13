@@ -7,6 +7,10 @@
 SDL_Texture *loadTexture(std::string path, SDL_Renderer* renderer) {
 	SDL_Texture *newTexture = NULL;
 	SDL_Surface *loadedSurface = IMG_Load(path.c_str());
+	if (!loadedSurface) {
+
+		printf("Failed to load png! IMG_Error: %s\n", IMG_GetError());
+	}
 	newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 	SDL_FreeSurface(loadedSurface);
 	return newTexture;

@@ -1,9 +1,10 @@
 #include <iostream>
 #include <list>
-
+#include <map>
 #include <SDL.h>
 
 #include "GameFuncDef.h"
+#include "SpriteHolder.h"
 
 #include "PlayerData.h"
 #include "Combatant.h"
@@ -12,6 +13,7 @@
 #include "Bullet.h"
 
 #include "PlayerCombatant.h"
+
 
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 762;
@@ -37,7 +39,14 @@ int main(int argc, char *argv[]) {
 			printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
 			return 0;
 		}
+
+		SpriteHolder sprites = SpriteHolder();
+		if (!sprites.LoadGameSprites(gRenderer)) {
+			printf("images could not be loaded!");
+		}
+
 		PlayerData player = PlayerData();
+
 		while (true) {
 
 			BuyScreenReturnValues buyResult = upgradeMenu(gRenderer, &player);
@@ -49,7 +58,7 @@ int main(int argc, char *argv[]) {
 
 			while (playResult == PlayLevelReturnValues::NEXTLEVEL) {
 				currentLevel++;
-				playResult = PlayLevel(gRenderer, &player, currentLevel);
+				playResult = PlayLevel(gRenderer, &player, &sprites, currentLevel);
 			}
 
 			//player failed or quit
@@ -61,7 +70,6 @@ int main(int argc, char *argv[]) {
 
 	return 0;
 }
-
 
 
 

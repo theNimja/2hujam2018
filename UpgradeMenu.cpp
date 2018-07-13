@@ -1,3 +1,6 @@
+#pragma once
+
+
 #include "GameFuncDef.h"
 #include "PlayerData.h"
 #include "Combatant.h"
@@ -5,11 +8,6 @@
 #include "EnemyCombatant.h"
 #include "Bullet.h"
 
-
-enum BuyScreenReturnValues {
-	NEWRUN,
-	QUITGAME
-};
 
 // updates all of the drawing functions
 void update(SDL_Renderer * Renderer, SDL_Rect &destRect, SDL_Texture * texture){
@@ -63,16 +61,16 @@ BuyScreenReturnValues upgradeMenu(SDL_Renderer* renderer, PlayerData* player){
 	bool go = true;
 
 	// set the class for the new image, I didn't add bmp material path since they are not ready, THEY WONT COMPILE
-	img::newImageLoad Title();
-	img::newImageLoad playButton();
-	img::newImageLoad cursor();
-	img::newImageLoad squares();
+	//img::newImageLoad Title();
+	//img::newImageLoad playButton();
+	//img::newImageLoad cursor();
+	//img::newImageLoad squares();
 
-	// Save to a Texture
-	SDL_Texture* TitleTexture = Title.convertToTexture(renderer);
-	SDL_Texture* pButtonTexture = playButton.convertToTexture(renderer);
-	SDL_Texture* cursorTexture = cursor.convertToTexture(renderer);
-	SDL_Texture* squareTexture = squares.convertToTexture(renderer);
+	//// Save to a Texture
+	//SDL_Texture* TitleTexture = Title.convertToTexture(renderer);
+	//SDL_Texture* pButtonTexture = playButton.convertToTexture(renderer);
+	//SDL_Texture* cursorTexture = cursor.convertToTexture(renderer);
+	//SDL_Texture* squareTexture = squares.convertToTexture(renderer);
 
 	// TODO: set the rectangular for each element
 
@@ -94,6 +92,16 @@ BuyScreenReturnValues upgradeMenu(SDL_Renderer* renderer, PlayerData* player){
 			break;
 		case SDL_QUIT:
 			return BuyScreenReturnValues::QUITGAME;
+		case SDL_KEYDOWN:
+			switch (event.key.keysym.sym) {
+			case SDLK_ESCAPE:
+				return BuyScreenReturnValues::QUITGAME;
+			case SDLK_p:
+				return BuyScreenReturnValues::NEWRUN;
+			default:
+				break;
+			}
+			break;
 		}
 		// TODO: renderer part
 	}

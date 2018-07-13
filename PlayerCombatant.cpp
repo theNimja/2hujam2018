@@ -1,9 +1,19 @@
 #include "PlayerCombatant.h"
 
 #include "PlayerData.h"
+#include <map>
+#include "GameFuncDef.h"
+#include "SpriteHolder.h"
 
 
-PlayerCombatant::PlayerCombatant() {
+PlayerCombatant::PlayerCombatant(SpriteHolder* sprites, PlayerData* data):Combatant(sprites) {	
+	sprite = sprites->GetTexture(SpriteHolder::Sprites::PLAYER);
+	myData = data;
+	linearDragCoefficient = 0.04;
+	rotationalDragCoefficent = 0.02;
+	maxVelocity = 40;
+	maxAngularVelocity = 120;
+	
 }
 
 

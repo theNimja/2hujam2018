@@ -1,7 +1,6 @@
 #pragma once
-
-class SDL_Texture;
-
+#include <SDL_image.h>
+class SpriteHolder;
 
 //core class that player avatar inherits from, also AI enemies and bullets
 class Combatant {
@@ -9,16 +8,17 @@ class Combatant {
 	
 
 public:
-	Combatant();
+	Combatant(SpriteHolder* sprites);
 	~Combatant();
 
 
 	SDL_Texture* GetTexture();
 
 	//does ticks such as dampening velocity, playing animations, updating timers, etc
-	void Tick(float deltaTime);
+	virtual void Tick(float deltaTime);
 
 	void Move(float x, float y);
+	void Rotate(float rotAngle);
 
 	float GetXVelocity();
 
@@ -34,16 +34,20 @@ public:
 
 	float GetRotation();
 
+	float GetRotationalVelocity();
+
 	void ThrustForwards(float thrust);
 	void ThrustRight(float thrust);
 	void ThrustClockwise(float thrust);
-protected:
 
+	float GetMaxVelocity();
+	float GetMaxAngularVelocity();
+protected:
+	float maxVelocity;
+	float maxAngularVelocity;
 	//reduces velocity over time by friction
 	void DampenVelocity(float deltaTime);
 		
-private:
-	
 
 	float xPosition;
 	float yPosition;

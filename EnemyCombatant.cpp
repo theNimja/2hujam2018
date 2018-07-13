@@ -2,7 +2,7 @@
 
 
 
-EnemyCombatant::EnemyCombatant() {
+EnemyCombatant::EnemyCombatant(SpriteHolder* sprites) :Combatant(sprites) {
 }
 
 
