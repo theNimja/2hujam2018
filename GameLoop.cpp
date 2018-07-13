@@ -118,15 +118,37 @@ PlayLevelReturnValues PlayLevel(SDL_Renderer* window, PlayerData* playerData, in
 
 		//TODO process inputs (clicks on buttons, closing game)
 
-		//TODO if quit,
-		//return PlayLevelReturnValues::QUITGAME;
-
-
 		//TODO for controls, pass these along to player, they will convert this to thrust and vectoring
 
 		//TODO get inputs this turn for enemies
 		for (Combatant* i : combatants) {
-			//TODO get input and apply thrust
+			//get input and apply thrust
+
+			PlayerCombatant* player = static_cast<PlayerCombatant*>(i);
+			if (player) {
+				float rotateThrust = 5.0;
+				float verticalThrust = 10.0;
+				float lateralThrust = 7.0;
+				if (pressQ) {
+					player->ThrustClockwise(-rotateThrust * deltaTime);
+				}
+				if (pressE) {
+					player->ThrustClockwise(rotateThrust * deltaTime);
+				}
+				if (pressW) {
+					player->ThrustForwards(verticalThrust * deltaTime);
+				}
+				if (pressD) {
+					player->ThrustForwards(-verticalThrust * deltaTime);
+				}
+				if (pressA) {
+					player->ThrustRight(-lateralThrust * deltaTime);
+				}
+				if (pressD) {
+					player->ThrustRight(lateralThrust * deltaTime);
+				}
+			}
+
 		}
 
 
@@ -144,7 +166,7 @@ PlayLevelReturnValues PlayLevel(SDL_Renderer* window, PlayerData* playerData, in
 			//differnt collision checks for different types
 
 			PlayerCombatant* player = static_cast<PlayerCombatant*>(i);
-			if (player != nullptr) {
+			if (player) {
 
 				//bump back into bounds
 				while (i->GetXPosition() > playAreaX) {

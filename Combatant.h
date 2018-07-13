@@ -33,6 +33,10 @@ public:
 	float DistanceTo(Combatant* other);
 
 	float GetRotation();
+
+	void ThrustForwards(float thrust);
+	void ThrustRight(float thrust);
+	void ThrustClockwise(float thrust);
 protected:
 
 	//reduces velocity over time by friction

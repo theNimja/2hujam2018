@@ -110,3 +110,18 @@ float Combatant::DistanceTo(Combatant* other) {
 float Combatant::GetRotation() {
 	return angle;
 }
+
+void Combatant::ThrustForwards(float thrust) {
+	xVelocity += thrust * cos(GetRotation() /180 * M_PI); 
+	yVelocity += thrust * sin(GetRotation() / 180 * M_PI);
+}
+
+void Combatant::ThrustRight(float thrust) {
+	xVelocity += thrust * cos((GetRotation()+90) / 180 * M_PI);
+	yVelocity += thrust * sin((GetRotation()+90) / 180 * M_PI);
+}
+
+void Combatant::ThrustClockwise(float thrust) {
+	clockwiseVelocity += thrust;
+}
+
