@@ -2,6 +2,16 @@
 // this class is to handle the Image Loading
 
 #include "SDL_Operations.h"
+#include <SDL_image.h>
+
+SDL_Texture *loadTexture(std::string path, SDL_Renderer* renderer) {
+	SDL_Texture *newTexture = NULL;
+	SDL_Surface *loadedSurface = IMG_Load(path.c_str());
+	newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+	SDL_FreeSurface(loadedSurface);
+	return newTexture;
+
+}
 
 SDL_Rect initRect(int16_t x, int16_t y){
 
