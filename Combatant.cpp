@@ -1,12 +1,16 @@
 #include "Combatant.h"
 #include <math.h>
-
+#include <SDL.h> 
 
 Combatant::Combatant() {
 }
 
 
 Combatant::~Combatant() {
+}
+
+SDL_Texture* Combatant::GetTexture() {
+	return sprite;
 }
 
 
@@ -101,4 +105,8 @@ float Combatant::DistanceTo(Combatant* other) {
 	float yDiff = other->GetYPosition();
 
 	return sqrtf(xDiff*xDiff + yDiff * yDiff);
+}
+
+float Combatant::GetRotation() {
+	return angle;
 }
