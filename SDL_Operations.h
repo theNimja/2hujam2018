@@ -6,6 +6,9 @@
 SDL_Window *window();
 SDL_Renderer *renderer(SDL_Window *window);
 
+void close();
+SDL_Texture *loadTexture(std::string path, SDL_Renderer* renderer);
+
 namespace img{
 
 	class newImageLoad{
