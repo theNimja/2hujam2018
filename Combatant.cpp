@@ -6,7 +6,13 @@
 #include "SpriteHolder.h"
 
 
-Combatant::Combatant(SpriteHolder* sprites) {
+Combatant::Combatant(SpriteHolder* sprites, float a, float v) {
+	xPosition = 0;
+	yPosition = 0;
+	angle = a;
+	xVelocity = 0;
+	yVelocity = 0;
+	ThrustForwards(v);
 }
 
 
@@ -86,8 +92,8 @@ void Combatant::DampenVelocity(float deltaTime) {
 }
 
 
-void Combatant::Tick(float deltaTime) {
-	
+void Combatant::Tick(float deltaTime, SpriteHolder* sprites) {
+
 }
 
 void Combatant::Move(float x, float y) {
@@ -97,6 +103,8 @@ void Combatant::Move(float x, float y) {
 
 void Combatant::Rotate(float rotAngle) {
 	angle += rotAngle;
+	if (angle > 180) { angle -= 360; }
+	if (angle < -180) { angle += 360; }
 }
 
 float Combatant::GetXVelocity() {
@@ -127,7 +135,7 @@ float Combatant::DistanceTo(Combatant* other) {
 }
 
 float Combatant::GetRotation() {
-	return angle-90;
+	return angle - 90;
 }
 
 float Combatant::GetRotationalVelocity() {
@@ -135,13 +143,13 @@ float Combatant::GetRotationalVelocity() {
 }
 
 void Combatant::ThrustForwards(float thrust) {
-	xVelocity += thrust * cos(GetRotation() /180 * M_PI); 
+	xVelocity += thrust * cos(GetRotation() / 180 * M_PI);
 	yVelocity += thrust * sin(GetRotation() / 180 * M_PI);
 }
 
 void Combatant::ThrustRight(float thrust) {
-	xVelocity += thrust * cos((GetRotation()+90) / 180 * M_PI);
-	yVelocity += thrust * sin((GetRotation()+90) / 180 * M_PI);
+	xVelocity += thrust * cos((GetRotation() + 90) / 180 * M_PI);
+	yVelocity += thrust * sin((GetRotation() + 90) / 180 * M_PI);
 }
 
 void Combatant::ThrustClockwise(float thrust) {
@@ -155,4 +163,8 @@ float Combatant::GetMaxVelocity() {
 
 float Combatant::GetMaxAngularVelocity() {
 	return maxAngularVelocity;
+}
+
+Bullet * Combatant::Fire(float relativeAngle, SpriteHolder* sprites) {
+	return nullptr;
 }

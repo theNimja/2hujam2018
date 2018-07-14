@@ -2,8 +2,8 @@
 
 
 
-Bullet::Bullet(SpriteHolder* sprites) :Combatant(sprites) {
-
+Bullet::Bullet(SpriteHolder* sprites,Combatant* firer, float a,float v) :Combatant(sprites,a,v) {
+	shooter = firer;
 }
 
 

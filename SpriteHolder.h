@@ -6,7 +6,10 @@ class SpriteHolder {
 public:
 	
 	enum Sprites {
-		PLAYER
+		PLAYER,
+		FIRE1,
+		FIRE2,
+		FIRE3
 	};
 
 	bool LoadGameSprites(SDL_Renderer* renderer);
@@ -19,6 +22,8 @@ public:
 	~SpriteHolder();
 private:
 	std::map<Sprites, SDL_Texture*>  spriteMap;
+
+	bool LoadSprite(SDL_Renderer* renderer, std::string path, Sprites id);
 
 };
 

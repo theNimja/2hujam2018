@@ -1,21 +1,21 @@
 #pragma once
 #include <SDL_image.h>
 class SpriteHolder;
-
+class Bullet;
 //core class that player avatar inherits from, also AI enemies and bullets
 class Combatant {
 
 	
 
 public:
-	Combatant(SpriteHolder* sprites);
+	Combatant(SpriteHolder* sprites,float a,float v);
 	~Combatant();
 
 
 	SDL_Texture* GetTexture();
 
 	//does ticks such as dampening velocity, playing animations, updating timers, etc
-	virtual void Tick(float deltaTime);
+	virtual void Tick(float deltaTime,SpriteHolder* sprites);
 
 	void Move(float x, float y);
 	void Rotate(float rotAngle);
@@ -42,6 +42,9 @@ public:
 
 	float GetMaxVelocity();
 	float GetMaxAngularVelocity();
+
+	virtual Bullet* Fire(float relativeAngle, SpriteHolder* sprites);
+
 protected:
 	float maxVelocity;
 	float maxAngularVelocity;

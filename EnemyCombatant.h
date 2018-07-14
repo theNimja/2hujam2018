@@ -3,9 +3,9 @@
 class EnemyCombatant :
 	public Combatant {
 public:
-	EnemyCombatant(SpriteHolder* sprites);
+	EnemyCombatant(SpriteHolder* sprites, float a, float v);
 	~EnemyCombatant();
 
-	void Tick(float deltaTime);
+	void Tick(float deltaTime, SpriteHolder* sprites);
 };
 

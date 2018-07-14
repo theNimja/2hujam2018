@@ -58,7 +58,8 @@ PlayLevelReturnValues PlayLevel(SDL_Renderer* window, PlayerData* playerData, Sp
 
 
 	//TODO place player at starting location
-	PlayerCombatant player = PlayerCombatant(sprites, playerData);
+	PlayerCombatant player = PlayerCombatant(sprites, 0, 0,
+		playerData);
 	player.Move(playAreaX / 2 - player.GetXPosition(), playAreaY / 2 - player.GetYPosition());
 
 	//create list of combatants
@@ -69,7 +70,7 @@ PlayLevelReturnValues PlayLevel(SDL_Renderer* window, PlayerData* playerData, Sp
 
 	float deltaTime = SDL_GetTicks() / 1000000.0;
 	while (true) {
-		//TODO get delta time
+		//get delta time
 		deltaTime = SDL_GetTicks() / 1000000.0 - deltaTime;
 
 		//get input events
@@ -124,10 +125,14 @@ PlayLevelReturnValues PlayLevel(SDL_Renderer* window, PlayerData* playerData, Sp
 			//get input and apply thrust
 
 			PlayerCombatant* player = dynamic_cast<PlayerCombatant*>(i);
+			//TODO: reduce fuel, launch jets
 			if (player) {
 				float rotateThrust = 40.0;
 				float verticalThrust = 50.0;
 				float lateralThrust = 30.0;
+
+				Bullet* newBullet = nullptr;
+
 				if (pressQ) {
 					player->ThrustClockwise(-rotateThrust * deltaTime);
 				}
@@ -136,15 +141,24 @@ PlayLevelReturnValues PlayLevel(SDL_Renderer* window, PlayerData* playerData, Sp
 				}
 				if (pressW) {
 					player->ThrustForwards(verticalThrust * deltaTime);
+					newBullet = player->Fire(0, sprites);
 				}
 				if (pressS) {
 					player->ThrustForwards(-verticalThrust * deltaTime);
+					newBullet = player->Fire(180, sprites);
 				}
 				if (pressA) {
 					player->ThrustRight(-lateralThrust * deltaTime);
+					newBullet = player->Fire(90, sprites);
 				}
 				if (pressD) {
 					player->ThrustRight(lateralThrust * deltaTime);
+					newBullet = player->Fire(90, sprites);
+				}
+
+
+				if (newBullet) {
+					combatants.push_back(newBullet);
 				}
 			}
 
@@ -169,16 +183,16 @@ PlayLevelReturnValues PlayLevel(SDL_Renderer* window, PlayerData* playerData, Sp
 
 				//bump back into bounds
 				if (i->GetXPosition() > playAreaX) {
-					i->Move(-(playAreaX - i->GetXPosition()) -1, 0);
+					i->Move(-(playAreaX - i->GetXPosition()) - 1, 0);
 				}
 				if (i->GetYPosition() > playAreaY) {
-					i->Move(0, -(playAreaY - (i->GetYPosition())) -1);
+					i->Move(0, -(playAreaY - (i->GetYPosition())) - 1);
 				}
 				if (i->GetXPosition() < 0) {
-					i->Move(-(i->GetXPosition())+1, 0);
+					i->Move(-(i->GetXPosition()) + 1, 0);
 				}
 				if (i->GetYPosition() < 0) {
-					i->Move(0, -(i->GetYPosition())+1);
+					i->Move(0, -(i->GetYPosition()) + 1);
 				}
 
 				//loop through other objects
@@ -186,66 +200,106 @@ PlayLevelReturnValues PlayLevel(SDL_Renderer* window, PlayerData* playerData, Sp
 
 				for (Combatant* j : combatants) {
 					if (j != player) {
-						Bullet* b = static_cast<Bullet*>(j);
-						EnemyCombatant* e = static_cast<EnemyCombatant*>(j);
-						if (b != nullptr || e != nullptr) {
-							if (player->DistanceTo(j) < (player->GetHitBoxRadius() + j->GetHitBoxRadius())) {
-								//we've been hit by a bullet or enemy
-								//TODO if we're hit, drop the death explosion object, destroy the player object, wait for a new one to be spawned, loase fuel, lose a life
-							}
-						}
+						if (player->DistanceTo(j) < (player->GetHitBoxRadius() + j->GetHitBoxRadius())) {
+							Bullet* b = static_cast<Bullet*>(j);
+							EnemyCombatant* e = static_cast<EnemyCombatant*>(j);
+							//if we hit an enemy, or a bullet that was not fired by us
+							bool doWeDie = false;
+							if (e != nullptr) {
+								doWeDie = true;
+								if (b != nullptr) {
+									if (b->shooter != player) {
+										doWeDie = true;
+									}
+								}
+								if (doWeDie) {
 
+									//we've been hit by a bullet or enemy
+									//TODO we're hit, drop the death explosion object, destroy the player object, wait for a new one to be spawned, loase fuel, lose a life
+								}
+							}
+
+						}
 					}
 				}
+
+
+				//TODO Enemy:
+				EnemyCombatant* enemy = dynamic_cast<EnemyCombatant*>(i);
+				if (enemy) {
+
+					//bump back into bounds
+					if (i->GetXPosition() > playAreaX) {
+						i->Move(-(playAreaX - i->GetXPosition()) - 1, 0);
+					}
+					if (i->GetYPosition() > playAreaY) {
+						i->Move(0, -(playAreaY - (i->GetYPosition())) - 1);
+					}
+					if (i->GetXPosition() < 0) {
+						i->Move(-(i->GetXPosition()) + 1, 0);
+					}
+					if (i->GetYPosition() < 0) {
+						i->Move(0, -(i->GetYPosition()) + 1);
+					}
+					//TODO check for collision with other enemy, if so, move away from them
+					//check for collision with jet, it so, drop explosion and die
+					for (Combatant* j : combatants) {
+						if (j != i) {
+							if (i->DistanceTo(j) < (i->GetHitBoxRadius() + j->GetHitBoxRadius())) {
+								Bullet* b = static_cast<Bullet*>(j);
+								if (b != nullptr) {
+									if (b->shooter == player) {
+										//TODO if we're hit, drop the death explosion object, destroy yourself
+									}
+								}
+							}
+
+						}
+					}
+
+
+				}
+
+
+				//Projectile 
+
+				Bullet* bullet = dynamic_cast<Bullet*>(i);
+				if (bullet) {
+					//destroy bullet
+					if (i->GetXPosition() > playAreaX || i->GetYPosition() > playAreaY || i->GetXPosition() < 0 || i->GetXPosition() > playAreaY) {
+						combatants.remove(bullet);
+						delete bullet;
+					} else {
+						for (Combatant* j : combatants) {
+							if (j != i) {
+								if (i->DistanceTo(j) < (i->GetHitBoxRadius() + j->GetHitBoxRadius())) {
+									Combatant* c = static_cast<Combatant*>(j);
+									if (c != nullptr) {
+										if (bullet->shooter == c) {
+											//we touched our own shooter,dissapear
+											combatants.remove(bullet);
+											delete bullet;
+										}
+									}
+								}
+
+							}
+						}
+					}
+
+				}
+				i->Tick(deltaTime, sprites);
 			}
+			//TODO level specific effects, i.e, spawn enemies
+
+			//render screen
+			RenderGameScreen(window, &combatants);
 
 
-			//TODO Enemy:
-			EnemyCombatant* enemy = dynamic_cast<EnemyCombatant*>(i);
-			if (enemy) {
-
-				//bump back into bounds
-				while (i->GetXPosition() > playAreaX) {
-					i->Move(-0.001, 0);
-				}
-				while (i->GetYPosition() > playAreaY) {
-					i->Move(0, -0.001);
-				}
-				while (i->GetXPosition() < 0) {
-					i->Move(0.001, 0);
-				}
-				while (i->GetXPosition() < 0) {
-					i->Move(0, -0.001);
-				}
-				//TODO check for collision with other enemy, if so, move away from them
-				//TODO check for collision with jet, it so, drop explosion and die
-
-			}
-
-			//Projectile 
-
-			Bullet* bullet = dynamic_cast<Bullet*>(i);
-			if (bullet) {
-				//destroy bullet
-				if (i->GetXPosition() > playAreaX || i->GetYPosition() > playAreaY || i->GetXPosition() < 0 || i->GetXPosition() > playAreaY) {
-					combatants.remove(bullet);
-					delete bullet;
-				}
-			}
-			i->Tick(deltaTime);
 		}
-		//TODO level specific effects, i.e, spawn enemies
 
-		//render screen
-		RenderGameScreen(window, &combatants);
-
-
+		//we should never exit the loop
 	}
-
-	//we should never exit the loop
-
-
-
 }
 
 
@@ -264,8 +318,8 @@ void RenderGameScreen(SDL_Renderer * window, std::list<Combatant*>* combatants) 
 			//set destination rectangle parameters
 			//TODO: account for screen size =/= play area
 			SDL_QueryTexture(textureToDraw, NULL, NULL, &destRect.w, &destRect.h);
-			destRect.x = i->GetXPosition()-destRect.w/2;
-			destRect.y = i->GetYPosition()-destRect.h/2;
+			destRect.x = i->GetXPosition() - destRect.w / 2;
+			destRect.y = i->GetYPosition() - destRect.h / 2;
 			SDL_RenderCopyEx(window, textureToDraw, NULL, &destRect, i->GetRotation(), NULL, SDL_FLIP_NONE);
 		} else {
 			printf("Found no texture to draw");
