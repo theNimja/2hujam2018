@@ -2,11 +2,15 @@
 
 
 #include "GameFuncDef.h"
+#include "SDL_Operations.h"
+#include <SDL_image.h>
 #include "PlayerData.h"
 #include "Combatant.h"
 #include "PlayerCombatant.h"
 #include "EnemyCombatant.h"
 #include "Bullet.h"
+#include "Button.h"
+#include <list>
 
 
 // updates all of the drawing functions
@@ -72,39 +76,59 @@ BuyScreenReturnValues upgradeMenu(SDL_Renderer* renderer, PlayerData* player){
 	//SDL_Texture* cursorTexture = cursor.convertToTexture(renderer);
 	//SDL_Texture* squareTexture = squares.convertToTexture(renderer);
 
-	// TODO: set the rectangular for each element
+	Button testButton;
+	SDL_Rect destRect = SDL_Rect();
+	//SDL_QueryTexture(textureToDraw, NULL, NULL, &destRect.w, &destRect.h);
+	//testButton.setRect(buttonArea);
+	testButton.setRenderer(renderer);
 
+	SDL_Texture *textureIn = loadTexture("b1.png", renderer);
+	SDL_Texture *textureOut = loadTexture("b1.png", renderer);
+	SDL_Texture *texturePressed = loadTexture("b2.png", renderer);
+	testButton.setTexture(textureIn, textureOut, texturePressed);
+
+
+	// TODO: set the rectangular for each element
+	SDL_Texture *bgTexture = NULL;
+	bgTexture = loadTexture("usamiBG.png", renderer);
 
 	while (go){
 
-		SDL_Event event;
-		SDL_PollEvent(&event);
+		
+
+		SDL_Event e;
+		SDL_PollEvent(&e);
 
 		// Switch the event type
-		switch (event.type){
-
-			// when the mouse is pressed then check for a collision
-		case SDL_MOUSEBUTTONDOWN:
-			// TODO: buttons
-			break;
-		case SDL_MOUSEMOTION:
-			// TODO: cursor position
-			break;
-		case SDL_QUIT:
-			return BuyScreenReturnValues::QUITGAME;
-		case SDL_KEYDOWN:
-			switch (event.key.keysym.sym) {
-			case SDLK_ESCAPE:
-				return BuyScreenReturnValues::QUITGAME;
-			case SDLK_p:
-				return BuyScreenReturnValues::NEWRUN;
-			default:
-				break;
+		while (SDL_PollEvent(&e) != 0) {
+			if (e.type == SDL_QUIT) {
+				go = false;
 			}
-			break;
 		}
+		testButton.handleEvent(&e);
+		SDL_RenderClear(renderer);
+		SDL_Texture* textureToDraw = testButton.getShowTexture();
+		SDL_QueryTexture(textureToDraw, NULL, NULL, &destRect.w, &destRect.h);
+		//std::cout << destRect.w << std::endl;
+		//std::cout << destRect.h << std::endl;
+		destRect.x = 500;
+		destRect.y = 200;
+		testButton.setRect(destRect);
+		SDL_RenderCopy(renderer, bgTexture, NULL, NULL);
+		SDL_RenderCopy(renderer, textureToDraw, NULL, &destRect);
+
+
+		
+		
+		
+
+
+		
+		
+		SDL_RenderPresent(renderer);
 		// TODO: renderer part
 	}
+	return BuyScreenReturnValues::QUITGAME;
 }
 
 

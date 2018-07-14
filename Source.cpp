@@ -55,14 +55,15 @@ int main(int argc, char *argv[]) {
 
 			int currentLevel = 0;
 			// play the first level
-
-			while (playResult == PlayLevelReturnValues::NEXTLEVEL) {
-				currentLevel++;
-				playResult = PlayLevel(gRenderer, &player, &sprites, currentLevel);
-			}
+			PlayLevel(gRenderer, &player, &sprites, currentLevel);
+			//upgradeMenu(gRenderer, &player);
+			//while (playResult == PlayLevelReturnValues::NEXTLEVEL) {
+			//	currentLevel++;
+			//	playResult = PlayLevel(gRenderer, &player, &sprites, currentLevel);
+			//}
 
 			//player failed or quit
-			if (playResult == PlayLevelReturnValues::QUIT) { return 0; }
+			//if (playResult == PlayLevelReturnValues::QUIT) { return 0; }
 			// if failed, will loop round to the buy screen
 		}
 	}
