@@ -8,6 +8,7 @@ SDL_Renderer *renderer(SDL_Window *window);
 
 void close();
 SDL_Texture *loadTexture(std::string path, SDL_Renderer* renderer);
+SDL_Texture *loadFontTexture(SDL_Renderer* renderer, std::string fontPath, int fontSize, std::string textureText, SDL_Color textColor);
 
 namespace img{
 

@@ -12,6 +12,7 @@
 class PlayerData;
 
 enum BuyScreenReturnValues {
+	DONOTHING, 
 	NEWRUN,
 	QUITGAME
 };

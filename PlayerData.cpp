@@ -17,6 +17,14 @@ PlayerData::PlayerData() {
 PlayerData::~PlayerData() {
 }
 
+void PlayerData::TryUpgradeFuelTank() {
+	fuel += 1;
+}
+
+void PlayerData::TryDowngradeFuelTank() {
+	fuel -= 1;
+}
+
 int PlayerData::GetMaxHealth() const {
 	return 0;
 }

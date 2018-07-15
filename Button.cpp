@@ -1,13 +1,43 @@
 #include "Button.h"
 #include <iostream>
-Button::Button() {
+#include <functional>
+#include "PlayerData.h"
+#include "GameFuncDef.h"
+
+Button::Button(std::function<void(BuyScreenReturnValues)> fp) {
+	isStartGameButton = false;
+	funcPtr = fp;
+	statusFlag = BuyScreenReturnValues::DONOTHING;
+
 	isShow = true;
 	isListen = true;
 	status = buttonStatus::BUTTON_OUT;
 
-	setFuncPressed(NULL);
+	//setFuncPressed(NULL);
 	buttonId = 0;
+	//buttonArea = SDL_Rect();
+	buttonArea.x = 0;
+	buttonArea.y = 0;
+	buttonArea.w = 0;
+	buttonArea.h = 0;
+	textureIn = NULL;
+	textureOut = NULL;
+	texturePressed = NULL;
+	renderer = NULL;
+}
 
+Button::Button(std::function<void()> nfp) {
+	isStartGameButton = false;
+	nfuncPtr = nfp;
+	statusFlag = BuyScreenReturnValues::DONOTHING;
+
+	isShow = true;
+	isListen = true;
+	status = buttonStatus::BUTTON_OUT;
+
+	//setFuncPressed(NULL);
+	buttonId = 0;
+	//buttonArea = SDL_Rect();
 	buttonArea.x = 0;
 	buttonArea.y = 0;
 	buttonArea.w = 0;
@@ -19,6 +49,9 @@ Button::Button() {
 }
 
 Button::~Button() {
+	funcPtr = NULL;
+	nfuncPtr = NULL;
+
 	if (NULL != textureIn)
 	{
 		SDL_DestroyTexture(textureIn);
@@ -33,9 +66,12 @@ Button::~Button() {
 	}
 
 }
-void Button::setFuncPressed(void(*theFuncPressed)(const Button *)) {
-	funcPressed = theFuncPressed;
-}
+
+
+
+//void Button::setFuncPressed(void(*theFuncPressed)(const Button *)) {
+//	funcPressed = theFuncPressed;
+//}
 void Button::setTexture(SDL_Texture* surfaceIn, SDL_Texture* surfaceOut, SDL_Texture* surfacePressed) {
 
 	textureIn = surfaceIn;
@@ -94,10 +130,16 @@ bool Button::handleEvent(SDL_Event * stEvent) {
 			status = buttonStatus::BUTTON_OUT;
 		}
 		if (oldStatus == buttonStatus::BUTTON_PRESSED) {
-			if (funcPressed != NULL) {
-				funcPressed(this);
-				bRet = true;
+			if (isStartGameButton) {
+				statusFlag = BuyScreenReturnValues::NEWRUN;
 			}
+
+			//funcPtr(statusFlag);
+			//if (funcpressed != null) {
+			//	funcpressed(this);
+			//	bret = true;
+			//}
+			bRet = true;
 		}
 	}
 	return bRet;
@@ -129,18 +171,22 @@ SDL_Rect Button::getRect()
 	return buttonArea;
 }
 
-void Button::setRenderer(SDL_Renderer* renderer)
+void Button::setRenderer(SDL_Renderer* renderer1)
 {
-	if (NULL != renderer)
-	{
-		renderer = renderer;
-	}
+
+	renderer = renderer1;
+
 }
 
-void Button::render()
+void Button::render(int x, int y)
 {
-	if (NULL != renderer)
-	{
-		SDL_RenderCopy(renderer, getShowTexture(), NULL, &buttonArea);
-	}
+	SDL_Rect xxx = SDL_Rect();
+	SDL_QueryTexture(getShowTexture(), NULL, NULL, &xxx.w, &xxx.h);
+	//std::cout << buttonArea.w << std::endl;
+	//std::cout << buttonArea.h << std::endl;
+	xxx.x = x;
+	xxx.y = y;
+	setRect(xxx);
+	SDL_RenderCopy(renderer, getShowTexture(), NULL, &xxx);
+
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_image.h>
+#include <functional>
+#include "GameFuncDef.h"
 
 enum buttonStatus {
 	BUTTON_OUT = 1,
@@ -10,7 +12,10 @@ enum buttonStatus {
 
 class Button {
 public:
-	
+	BuyScreenReturnValues statusFlag;
+
+	bool isStartGameButton;
+
 	// showing area of button
 	SDL_Rect buttonArea;
 	
@@ -21,16 +26,23 @@ public:
 	
 	int buttonId;
 
-	Button();
+	std::function<void(BuyScreenReturnValues)> funcPtr;
+	std::function<void()> nfuncPtr;
+
+	Button(std::function<void(BuyScreenReturnValues)> fp);
+	Button(std::function<void()> nfp);
 	~Button();
 
 	void setTexture(SDL_Texture* effectIn, SDL_Texture* effectOut, SDL_Texture* effectPressed);
 	
 
 	bool handleEvent(SDL_Event *stEvent);
+
 	
 
-	void setFuncPressed(void(*funcPressed)(const Button *));
+	void operator() () const;
+
+	//void setFuncPressed(void(*funcPressed)(const Button *));
 
 	void setRect(const SDL_Rect &rect);
 
@@ -38,7 +50,7 @@ public:
 
 	void setRenderer(SDL_Renderer* renderer);
 
-	void render();
+	void render(int x, int y);
 
 	SDL_Texture *getShowTexture();
 
@@ -58,7 +70,7 @@ private:
 	bool pointIn(int x, int y);
 
 	// callback function
-	void(*funcPressed)(const Button * pButton);
+	typedef void(*funcPressed)(const Button * pButton);
 
 	
 };

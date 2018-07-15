@@ -2,6 +2,7 @@
 // this class is to handle the Image Loading
 
 #include "SDL_Operations.h"
+#include <SDL_ttf.h>
 #include <SDL_image.h>
 
 SDL_Texture *loadTexture(std::string path, SDL_Renderer* renderer) {
@@ -14,8 +15,27 @@ SDL_Texture *loadTexture(std::string path, SDL_Renderer* renderer) {
 	newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 	SDL_FreeSurface(loadedSurface);
 	return newTexture;
+}
+
+SDL_Texture *loadFontTexture(SDL_Renderer* renderer, std::string fontPath, int fontSize, std::string textureText, SDL_Color textColor) {
+	TTF_Init();
+	TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
+	if (font == NULL) {
+		std::cout << "font load error" << TTF_GetError() << std::endl;
+	}
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font, textureText.c_str(), textColor);
+	if (textSurface == NULL) {
+		std::cout << "textSurface render error"<< SDL_GetError() << std::endl;
+	}
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, textSurface);
+	if (texture == NULL) {
+		std::cout << "font texture create error"<< SDL_GetError() << std::endl;
+	}
+	SDL_FreeSurface(textSurface);
+	return texture;
 
 }
+
 
 SDL_Rect initRect(int16_t x, int16_t y){
 

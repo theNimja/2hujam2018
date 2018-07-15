@@ -14,7 +14,9 @@ public:
 	bool TryUpgradeHealth();
 
 	//tries to spend money to upgrade the fuelBonus, return if it had enough money to do so
-	bool TryUpgradeFuelTank();
+	void TryUpgradeFuelTank();
+
+	void TryDowngradeFuelTank();
 
 	//tries to spend money to upgrade the speedBonus, return if it had enough money to do so
 	bool TryUpgradeSpeed();

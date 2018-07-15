@@ -51,11 +51,15 @@ int main(int argc, char *argv[]) {
 
 			BuyScreenReturnValues buyResult = upgradeMenu(gRenderer, &player);
 			if (buyResult == BuyScreenReturnValues::QUITGAME) { return 0; }
+			if (buyResult == BuyScreenReturnValues::NEWRUN) {
+				int currentLevel = 0;
+				// play the first level
+				PlayLevel(gRenderer, &player, &sprites, currentLevel);
+			}
 			PlayLevelReturnValues playResult = PlayLevelReturnValues::NEXTLEVEL;
+			
 
-			int currentLevel = 0;
-			// play the first level
-			PlayLevel(gRenderer, &player, &sprites, currentLevel);
+			
 			//upgradeMenu(gRenderer, &player);
 			//while (playResult == PlayLevelReturnValues::NEXTLEVEL) {
 			//	currentLevel++;
